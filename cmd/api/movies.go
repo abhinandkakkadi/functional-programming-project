@@ -1,11 +1,10 @@
 package main
 
 import (
+	"abhinandkakkadi/functional/internals/data"
 	"fmt"
 	"net/http"
-	"strconv"
-
-	"github.com/julienschmidt/httprouter"
+	"time"
 )
 
 
@@ -17,13 +16,25 @@ func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request)
 	// When httprouter is parsing a request, any interpolated URL parameters will be 
 	// stored in the request context. We can use the ParamsFromContext() function to 
 	// retrieve a slice containing these parameter names and values.
-	params := httprouter.ParamsFromContext(r.Context())
-
-	id, err := strconv.ParseInt(params.ByName("id"), 10, 64)
+	id, err := app.readIDParam(r)
 	if err != nil {
 		http.NotFound(w, r)
 		return
 	}
 
-	fmt.Fprintf(w, "show the details of movie%d\n", id)
+	movies := data.Movie{
+		ID: id,
+		CreatedAt: time.Now(),
+		Title: "Casablanca",
+		Runtime: 102,
+		Genres: []string{"drama", "romance", "war"},
+		Version: 1,
+	}
+
+	err = app.writeJSON(w, http.StatusOK, movies, nil)
+	if err != nil {
+		app.logger.Println(err)
+		http.Error(w, "The server encountered a problem and could not process our request", http.StatusInternalServerError)
+	}
+
 }
