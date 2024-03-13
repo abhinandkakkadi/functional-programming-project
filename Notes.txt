@@ -5,3 +5,4 @@ https://benhoyt.com/writings/go-routing/ -> Different ways of routing in go.
 chi, mux - Use these routers for implementing conflicting routes.
 
 
+The rule about pointers vs. values for receivers is that value methods can be invoked on pointers and values, but pointer methods can only be invoked on pointers.
