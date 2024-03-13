@@ -6,13 +6,16 @@ import (
 
 // application status, environment and version
 func (app *application) healthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	data := map[string]string{
+
+	env := envelope{
 		"status": "available",
-		"environment": app.cfg.Env,
-		"version": version,
+		"system_info": map[string]string{
+			"environment": app.cfg.Env,
+			"version": version,
+		},
 	}
 
-	err := app.writeJSON(w, http.StatusOK, data, nil)
+	err := app.writeJSON(w, http.StatusOK, env, nil)
 	if err != nil {
 		http.Error(w, "The server encountered an error and could not process the request ", http.StatusInternalServerError)
 		return

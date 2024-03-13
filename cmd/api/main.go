@@ -17,10 +17,9 @@ type Config struct {
 }
 
 type application struct {
-	cfg Config
+	cfg    Config
 	logger *log.Logger
 }
-
 
 func main() {
 
@@ -28,19 +27,19 @@ func main() {
 
 	flag.IntVar(&cfg.Port, "port", 4000, "API server port")
 	flag.StringVar(&cfg.Env, "env", "development", "Environment (development|staging|production)")
-	
-	logger := log.New(os.Stdout, "", log.Ldate | log.Ltime)
+
+	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
 	app := &application{
-		cfg: cfg,
+		cfg:    cfg,
 		logger: logger,
 	}
 
 	srv := &http.Server{
-		Addr: fmt.Sprintf(":%d", cfg.Port),
-		Handler: app.routes(),
-		IdleTimeout: time.Minute,
-		ReadTimeout: 10 * time.Second,
+		Addr:         fmt.Sprintf(":%d", cfg.Port),
+		Handler:      app.routes(),
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
 
