@@ -109,7 +109,6 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst int
 
 	}
 
-
 	// Call Decode() again, using a pointer to an empty anonymous struct as the
 	// destination. If the request body only contained a single JSON value this will 
 	// return an io.EOF error. So if we get anything else, we know that there is
