@@ -60,9 +60,9 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst int
 		case errors.As(err, &syntaxError):
 			return fmt.Errorf("body contains badly formed JSON (at character %d)", syntaxError.Offset)
 
-			// In some circumstances Decode() may also return an io.ErrUnexpectedEOF error
-			// for syntax errors in the JSON. So we check for this using errors.Is() and
-			// return a generic error message. There is an open issue regarding this at
+		// In some circumstances Decode() may also return an io.ErrUnexpectedEOF error
+		// for syntax errors in the JSON. So we check for this using errors.Is() and
+		// return a generic error message. There is an open issue regarding this at
 		case errors.Is(err, io.ErrUnexpectedEOF):
 			return errors.New("body contains badly formatted JSON")
 
@@ -86,4 +86,6 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst int
 		}
 
 	}
+
+	return nil
 }

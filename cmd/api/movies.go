@@ -2,7 +2,6 @@ package main
 
 import (
 	"abhinandkakkadi/functional/internals/data"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -17,9 +16,9 @@ func (app *application) createMovieHandler(w http.ResponseWriter, r *http.Reques
 		Genres  []string `json:"genres"`
 	}
 
-	err := json.NewDecoder(r.Body).Decode(&input)
+	err := app.readJSON(w, r, &input)
 	if err != nil {
-		app.errorResponse(w, r, http.StatusBadRequest, err.Error())
+		app.badRequestResponse(w, r, err)
 		return
 	}
 
@@ -27,7 +26,7 @@ func (app *application) createMovieHandler(w http.ResponseWriter, r *http.Reques
 }
 
 func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request) {
-	// When httprouter is parsing a request, any interpolated URL parameters will be
+	// When http router is parsing a request, any interpolated URL parameters will be
 	// stored in the request context. We can use the ParamsFromContext() function to
 	// retrieve a slice containing these parameter names and values.
 	id, err := app.readIDParam(r)
